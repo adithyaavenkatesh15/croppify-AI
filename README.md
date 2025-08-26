@@ -119,13 +119,6 @@ This project is implemented as a **Flask-based web application** with an easy-to
 
 ---
 
-## 👨‍💻 Contributors
-
-* **Adithyaa MV (2311004)**
-* **Ramzan R (2311048)**
-* **Thamarai Selvi O (2311061)**
-
----
 
 ## 📜 License
 
