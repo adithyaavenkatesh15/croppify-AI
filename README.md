@@ -145,8 +145,3 @@ graph TD
 ## 📜 License
 
 This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
-
----
-
-👉 I can also help you add **screenshots of the UI (Annexure II from your report)** into the README (e.g., under a “📸 Screenshots” section) so the GitHub page looks more attractive.
-Do you want me to prepare that section too?
