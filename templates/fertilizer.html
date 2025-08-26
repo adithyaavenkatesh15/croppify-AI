@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fertilizer Recommendations</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("https://static.vecteezy.com/system/resources/thumbnails/054/641/761/small/lush-green-rice-fields-stretch-across-the-landscape-under-a-cloudy-sky-photo.jpeg")
+          no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Semi-transparent background */
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .form-group {
+        margin: 20px 0;
+      }
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .recommendation {
+        padding: 15px;
+        background-color: #e0e0e0;
+        margin: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+      .recommendation.active {
+        display: block;
+      }
+      .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        position: absolute;
+        right: 20px; /* Moves the button to the right */
+        bottom: 20px; /* Optionally adjust the vertical position */
+      }
+      .back-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Fertilizer Recommendations Based on NPK Values</h1>
+
+      <div class="form-group">
+        <label for="soil-type">Select Soil Type:</label>
+        <select id="soil-type">
+          <option value="loamy">Loamy Soil</option>
+          <option value="sandy">Sandy Soil</option>
+          <option value="clay">Clay Soil</option>
+          <option value="red soil">red soil</option>
+          <option value="red sandy soil">red sandy soil</option>
+          <option value="black soil">black soil</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="npk-nitrogen">Nitrogen (N) Value:</label>
+        <input
+          type="number"
+          id="npk-nitrogen"
+          placeholder="Enter Nitrogen value"
+        />
+      </div>
+      <div class="form-group">
+        <label for="npk-phosphorus">Phosphorus (P) Value:</label>
+        <input
+          type="number"
+          id="npk-phosphorus"
+          placeholder="Enter Phosphorus value"
+        />
+      </div>
+      <div class="form-group">
+        <label for="npk-potassium">Potassium (K) Value:</label>
+        <input
+          type="number"
+          id="npk-potassium"
+          placeholder="Enter Potassium value"
+        />
+      </div>
+      <div class="form-group">
+        <label for="crop type">Crop name:</label>
+        <input
+          type="text"
+          id="name"
+          placeholder="Enter crop name:"
+        />
+      </div>
+    
+      <button onclick="getFertilizerRecommendations()">
+        Get Fertilizer Recommendations
+      </button>
+
+      <div class="NKP-response" id="NKP-response">
+      </div>
+
+
+
+      <a href="plant.html" class="back-button">Back to Home</a>
+    </div>
+
+    <script>
+      function getFertilizerRecommendations() {
+        // Get user input values
+        const nitrogen = parseFloat(
+          document.getElementById("npk-nitrogen").value
+        );
+        const phosphorus = parseFloat(
+          document.getElementById("npk-phosphorus").value
+        );
+        const potassium = parseFloat(
+          document.getElementById("npk-potassium").value
+        );
+        const soilType = document.getElementById("soil-type").value;
+
+        const cropName = document.getElementById("name").value;
+
+        let NKPVals= {
+          nitrogen: nitrogen,
+          phosphorus: phosphorus,
+          potassium: potassium,
+          cropName: cropName,
+          soilType: soilType,
+        };
+
+        fetch('/fertilizer', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(NKPVals),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data.recommendation)
+            const responseDiv = document.getElementById('NKP-response');
+            responseDiv.innerHTML = `
+              <div class="recommendation active">
+                <h3>Recommended Fertilizer: ${data.recommendation.fertilizer_name}</h3>
+                <p>${data.recommendation.description}</p>
+              </div>
+            `;
+
+            // Show the appropriate recommendation based on soil type
+            const recommendationId = `fertilizer-${soilType}`;
+            const recommendation = document.getElementById(recommendationId);
+            if (recommendation) {
+              recommendation.classList.add('active');
+            } 
+          })
+          .catch((error) => {
+            console.error('Error:', error);
+            alert('An error occurred while fetching recommendations.'); 
+          })
+          }
+
+
+
+      
+    </script>
+  </body>
+</html>

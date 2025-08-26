@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crop Recommendations</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url("https://static.vecteezy.com/system/resources/thumbnails/054/641/761/small/lush-green-rice-fields-stretch-across-the-landscape-under-a-cloudy-sky-photo.jpeg") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.95);
+      max-width: 900px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .recommendation-result {
+      margin-top: 2rem;
+      text-align: center;
+    }
+
+    #loader {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .back-button, .backs-button {
+      display: inline-block;
+      padding: 10px 20px;
+      margin-top: 2rem;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .backs-button {
+      background-color: #6c757d;
+      margin-right: 10px;
+    }
+
+    .back-button:hover, .backs-button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Crop Recommendations Based on NPK Values</h1>
+
+    <div class="form-group">
+      <label for="soil-type">Select Soil Type:</label>
+      <select id="soil-type">
+        <option value="loamy">Loamy Soil</option>
+        <option value="sandy">Sandy Soil</option>
+        <option value="clay">Clay Soil</option>
+        <option value="red soil">Red Soil</option>
+        <option value="red sandy soil">Red Sandy Soil</option>
+        <option value="black soil">Black Soil</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="npk-nitrogen">Nitrogen (N):</label>
+      <input type="number" id="npk-nitrogen" placeholder="Enter Nitrogen value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="npk-phosphorus">Phosphorus (P):</label>
+      <input type="number" id="npk-phosphorus" placeholder="Enter Phosphorus value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="npk-potassium">Potassium (K):</label>
+      <input type="number" id="npk-potassium" placeholder="Enter Potassium value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="pH">pH Value:</label>
+      <input type="number" id="pH" placeholder="Enter pH value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="rainfall">Rainfall:</label>
+      <input type="number" id="rainfall" placeholder="Enter rainfall value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="temperature">Temperature:</label>
+      <input type="number" id="temperature" placeholder="Enter temperature value"/>
+    </div>
+
+    <div class="form-group">
+      <label for="Humidity">Humidity:</label>
+      <input type="number" id="Humidity" placeholder="Enter humidity value"/>
+    </div>
+
+    <button onclick="getRecommendations()">Get Recommendation</button>
+
+    <div id="loader">
+      <p>🔄 Predicting best crop...</p>
+    </div>
+
+    <div class="recommendation-result" id="recommendation-result" style="display: none;">
+      <h2>Recommended Crop: <span id="crop-name"></span></h2>
+    </div>
+
+    <a href="fertilizer.html" class="backs-button">Go to Fertilizer Recommendations</a>
+    <a href="plant.html" class="back-button">Back to Home</a>
+  </div>
+
+  <script>
+    function getRecommendations() {
+      const nitrogen = parseFloat(document.getElementById("npk-nitrogen").value);
+      const phosphorus = parseFloat(document.getElementById("npk-phosphorus").value);
+      const potassium = parseFloat(document.getElementById("npk-potassium").value);
+      const pH = parseFloat(document.getElementById("pH").value);
+      const rainfall = parseFloat(document.getElementById("rainfall").value);
+      const temperature = parseFloat(document.getElementById("temperature").value);
+      const humidity = parseFloat(document.getElementById("Humidity").value);
+
+      if ([nitrogen, phosphorus, potassium, pH, rainfall, temperature, humidity].some(isNaN)) {
+        alert("Please fill in all fields with valid numbers.");
+        return;
+      }
+
+      const requestData = {
+        nitrogen,
+        phosphorus,
+        potassium,
+        pH,
+        rainfall,
+        temperature,
+        humidity
+      };
+
+      document.getElementById("loader").style.display = "block";
+      document.getElementById("recommendation-result").style.display = "none";
+
+      fetch("/recommend", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(requestData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("loader").style.display = "none";
+        if (data.recommendation) {
+          const crop = data.recommendation.toLowerCase();
+          document.getElementById("crop-name").textContent = crop.charAt(0).toUpperCase() + crop.slice(1);
+          document.getElementById("recommendation-result").style.display = "block";
+        } else {
+          alert("No crop recommended: " + data.error);
+        }
+      })
+      .catch(error => {
+        document.getElementById("loader").style.display = "none";
+        alert("Error: " + error.message);
+        console.error("Fetch error:", error);
+      });
+    }
+  </script>
+</body>
+</html>

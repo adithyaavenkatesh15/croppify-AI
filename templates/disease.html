@@ -1,0 +1,225 @@
+<!-- disease.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crop Disease Detection</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("https://static.vecteezy.com/system/resources/thumbnails/054/641/761/small/lush-green-rice-fields-stretch-across-the-landscape-under-a-cloudy-sky-photo.jpeg")
+          no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 80%;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.8
+        ); /* Semi-transparent background */
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+      .form-group {
+        margin: 20px 0;
+      }
+      .form-group input[type="file"] {
+        padding: 10px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      .description {
+        margin: 20px 0;
+        padding: 20px;
+        background-color: #e0e0e0;
+        border-radius: 5px;
+      }
+      .back-button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        position: absolute;
+        right: 20px; /* Moves the button to the right */
+        bottom: 20px; /* Optionally adjust the vertical position */
+      }
+      .back-button:hover {
+        background-color: #0056b3;
+      }
+        .detect-btn {
+          padding: 12px 30px;
+          font-size: 16px;
+          background-color: #28a745;
+          color: white;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+          transition: background-color 0.3s ease;
+        }
+        
+        .detect-btn:hover {
+          background-color: #218838;
+        }
+        
+        #imageContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+        }
+        
+        #resultImage {
+          max-width: 100%;
+          max-height: 80%;
+          margin-top: 15px;
+          padding: 15px;
+        }
+        
+        
+      
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Crop Disease Detection</h1>
+
+      <div class="description">
+        <h3>What is Crop Disease Detection?</h3>
+        <p>
+          Crop disease detection refers to the process of identifying diseases
+          that affect crops. Timely detection helps in preventing the spread of
+          the disease and applying treatments to safeguard the crops.
+        </p>
+        <p><strong>Common Crop Diseases:</strong></p>
+        <ul>
+          <li>
+            <strong>Leaf Spot Disease:</strong> A fungal infection that affects
+            the leaves, leading to yellowing and premature leaf drop.
+          </li>
+          <li>
+            <strong>Powdery Mildew:</strong> A fungal disease that creates a
+            white, powdery coating on leaves and stems.
+          </li>
+          <li>
+            <strong>Blight:</strong> Caused by bacteria or fungi, it leads to
+            wilting, browning, and rot in plants.
+          </li>
+        </ul>
+        <p>
+          This tool helps identify diseases in crops and provides treatment or
+          prevention options.
+        </p>
+      </div>
+
+      <div class="form-group">
+        <label for="crop-disease-image">Upload Image of Crop</label><br />
+        <input
+          type="file"
+          id="crop-disease-image"
+          class="crop-disease-image"
+          accept="image/*"
+          onchange="previewImage()"
+        />
+      </div>
+      
+      <div id="image-preview" style="display: none; text-align: center;">
+        <h3>Image Preview:</h3>
+        <img
+          id="preview-img"
+          src=""
+          alt="Uploaded Image"
+          style="max-width: 400px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0px 0px 10px rgba(0,0,0,0.2);"
+        />
+      </div>
+      
+      <div style="text-align: center; margin-top: 20px;">
+        <button class="detect-btn" onclick="handleImageUpload()">Detect Disease</button>
+      </div>
+
+      <div id="disease-result" style="display: none; margin-top: 20px">
+        <h3>Detected Disease: Leaf Spot Disease</h3>
+        <p>
+          Leaf Spot is a fungal disease that appears as dark, circular spots on
+          the leaves. Apply fungicide and remove infected leaves to prevent
+          further spread.
+        </p>
+      </div>
+
+      <a href="plant" class="back-button">Back to Home</a>
+      <div class="image-container" style: "display: none;">
+        <h3>Detected Disease Image:</h3>
+        <img id="resultImage" src="" />
+      </div>
+    </div>
+
+    <script>
+
+      function previewImage() {
+        const fileInput = document.getElementById("crop-disease-image");
+        const previewImg = document.getElementById("preview-img");
+        const imagePreview = document.getElementById("image-preview");
+      
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImg.src = e.target.result;
+            imagePreview.style.display = "block";
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      }
+      
+      function handleImageUpload() {
+        const fileInput = document.getElementById("crop-disease-image");
+        const file = fileInput.files[0];
+
+        if (!file) {
+          alert("Please upload an image.")
+          return;
+        }
+
+        const formData = new FormData()
+        formData.append("image", file);
+
+        fetch("detect-disease", {
+          method: "POST",
+          body: formData,
+        })
+          .then((res) => res.json())
+          
+          .then(data => {
+            console.log(data);
+            const container = document.querySelector(".image-container");
+            const img       = document.getElementById("resultImage");
+            const label     = container.querySelector("h3");
+          
+            img.src = `data:image/jpeg;base64,${data.image}`;
+            label.innerText = "Detected Disease: " +
+              Object.keys(data.detected_classes).join(", ");
+            container.style.display = "flex";
+          })
+          .catch(err => {
+            console.error("Something went wrong in the success handler:", err);
+            alert("Error detecting disease.");
+          });
+      }
+    </script>
+  </body>
+</html>

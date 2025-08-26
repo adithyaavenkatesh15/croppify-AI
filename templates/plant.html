@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Croppify - AI Driven System</title>
+    <style>
+      body {
+        font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+          sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: #f4f4f4;
+        overflow-x: scroll;
+      }
+
+      .welcome-page {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: url("https://agrigro.com/cdn/shop/articles/elements-of-crop-production_featimg_750x.jpg?v=1704299285")
+          no-repeat center center/cover;
+        color: white;
+        padding: 20px;
+      }
+
+      .welcome-box {
+        background: rgba(0, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 10px;
+        max-width: 80%;
+        text-align: center;
+      }
+
+      /* About Us Section */
+      .about-us {
+        background: #f9fbfa;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .about-us h2 {
+        padding: 10px;
+        font-size: 28px;
+        margin-bottom: 10px;
+        color: #121212;
+      }
+
+      .about-us p {
+        font-size: 16px;
+        text-align: center;
+        color: #000000;
+        max-width: 80%;
+        margin: auto;
+        margin-bottom: 50px;
+      }
+
+      /* We Provide Section */
+      .we-provide {
+        background: #28a745;
+        color: white;
+        text-align: center;
+        padding: 5px;
+      }
+
+      .we-provide h2 {
+        font-size: 30px;
+        padding: 3px;
+        margin-bottom: px;
+      }
+
+      /* Horizontal Slider */
+      .horizontal-slider {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding: 20px;
+        background: #fff;
+        justify-content: flex-start;
+        gap: 20px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+        scrollbar-color: #888 #e0e0e0;
+      }
+
+      .horizontal-slider::-webkit-scrollbar {
+        height: 8px; /* Height of the scrollbar */
+      }
+
+      .horizontal-slider::-webkit-scrollbar-track {
+        background: #e0e0e0; /* Track color */
+        border-radius: 10px;
+      }
+
+      .horizontal-slider::-webkit-scrollbar-thumb {
+        background-color: #888; /* Thumb color */
+        border-radius: 10px;
+      }
+
+      .horizontal-slider::-webkit-scrollbar-thumb:hover {
+        background-color: #555; /* Thumb hover color */
+      }
+
+      .horizontal-slide {
+        min-width: 600px;
+        height: auto;
+        margin: 10px;
+        padding: 20px;
+        background: #e0e0e0;
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        scroll-snap-align: start;
+      }
+
+      .horizontal-slide img {
+        width: 500px;
+        height: 200px;
+        height: auto;
+        object-fit: cover;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+
+      .text-content {
+        text-align: center;
+        padding: 10px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 10px;
+        width: 90%;
+        max-width: 100%;
+        word-wrap: break-word;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .text-content h3 {
+        font-size: 18px;
+        margin: 10px 0;
+      }
+
+      .text-content p {
+        font-size: 14px;
+        margin: 0;
+      }
+
+      /* Mission & Vision */
+      .mission-vision {
+        background: #fff;
+        text-align: center;
+        padding: 50px;
+        margin-bottom: 30px;
+      }
+
+      .mission-vision h2 {
+        font-size: 28px;
+        padding: 3px;
+        margin-bottom: 30px;
+        color: #070707;
+      }
+
+      .mission-vision p {
+        font-size: 16px;
+        color: #000000;
+        max-width: 80%;
+        margin: auto;
+      }
+
+      /* Contact Section */
+      .contact-section {
+        padding: 40px;
+        background: #fff;
+        text-align: center;
+      }
+
+      .contact-section input,
+      .contact-section textarea {
+        width: 80%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+
+      .contact-section button {
+        background: #28a745;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      /* Chatbot Button */
+      .chatbot-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #007bff;
+        color: white;
+        padding: 15px 20px;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="welcome-page">
+      <div class="welcome-box">
+        <h1>Welcome to Croppify-AI</h1>
+        <p>Your AI-driven solution for crop health and yield optimization.</p>
+      </div>
+    </div>
+    <div class="about-us">
+      <h2>About Us</h2>
+      <p>
+        At Croppify-AI, we harness the power of advanced artificial intelligence
+        to provide farmers with accurate recommendations for fertilizers,
+        disease detection, crop selection, and yield predictions. Our platform
+        aims to empower the agricultural community by offering tools that boost
+        productivity, reduce losses, and foster sustainable farming practices.
+        With AI-driven insights, we help farmers make data-driven decisions,
+        enhancing crop health, optimizing resources, and contributing to a more
+        sustainable and efficient agricultural future.
+      </p>
+    </div>
+
+    <!-- We Provide -->
+    <div class="we-provide">
+      <h2>We Offer</h2>
+    </div>
+
+    <div class="horizontal-slider">
+      <div class="horizontal-slide" onclick="navigateTo('fertilizer')">
+        <img src="static/ferti.jpg" alt="Fertilizer" />
+        <div class="text-content">
+          <h3>Fertilizer Recommendations</h3>
+          <p>
+            Get the best fertilizer suggestions based on soil and crop type.
+          </p>
+        </div>
+      </div>
+
+      <div class="horizontal-slide" onclick="navigateTo('yield')">
+        <img src="static/yield.png" alt="Yield" />
+        <div class="text-content">
+          <h3>Yield Prediction</h3>
+          <p>Predict your crop yield based on AI-driven models.</p>
+        </div>
+      </div>
+
+      <div class="horizontal-slide" onclick="navigateTo('disease')">
+        <img src="static/disea.png" alt="Disease Detection" />
+        <div class="text-content">
+          <h3>Crop Disease Detection</h3>
+          <p>Identify crop diseases from images and get treatment advice.</p>
+        </div>
+      </div>
+
+      <div class="horizontal-slide" onclick="navigateTo('crop')">
+        <img src="static/cropre.jpg" alt="Crop Recommendations" />
+        <div class="text-content">
+          <h3>Crop Recommendations</h3>
+          <p>Find the best crops to grow based on season and soil type.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mission & Vision -->
+    <div class="mission-vision">
+      <h2>Our Mission & Vision</h2>
+      <p>
+        Our mission is to empower farmers with AI-driven insights for healthier
+        crops, increased yields, and sustainable agricultural practices. By
+        harnessing computer vision and natural language processing, we provide
+        precise disease detection, fertilizer recommendations, and effective
+        crop management strategies. We envision a future where technology
+        bridges the gap between farmers and expert agricultural knowledge,
+        enabling precision farming and resource optimization. Our goal is to
+        build an AI-powered ecosystem that reduces agricultural losses, boosts
+        productivity, and strengthens global food security, ensuring a
+        sustainable future for agriculture.
+      </p>
+    </div>
+
+    <div class="contact-section">
+      <h2>Contact Us</h2>
+      <input type="text" id="name" placeholder="Your Name" />
+      <input type="email" id="email" placeholder="Your Email" />
+      <input type="tel" id="phone" placeholder="Your Phone Number" />
+      <textarea id="query" placeholder="Your Query"></textarea>
+      <button onclick="submitForm()">Submit</button>
+    </div>
+
+    <div class="chatbot-button" onclick="openChat()">💬 Chat</div>
+
+    <script>
+      function navigateTo(page) {
+        window.location.href = page;
+      }
+
+      function openChat() {
+        alert("Chatbot is coming soon!");
+      }
+
+      function submitForm() {
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const query = document.getElementById("query").value;
+
+        if (!name || !email || !phone || !query) {
+          alert("Please fill out all fields.");
+          return;
+        }
+
+        // Here, you can implement the logic for submitting the form, like sending the data to the server
+        alert("Form submitted successfully! We will contact you soon.");
+
+        // Reset form
+        document.getElementById("name").value = "";
+        document.getElementById("email").value = "";
+        document.getElementById("phone").value = "";
+        document.getElementById("query").value = "";
+      }
+    </script>
+  </body>
+</html>

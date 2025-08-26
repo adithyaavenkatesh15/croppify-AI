@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Yield Prediction</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: url("https://static.vecteezy.com/system/resources/thumbnails/054/641/761/small/lush-green-rice-fields-stretch-across-the-landscape-under-a-cloudy-sky-photo.jpeg")
+          no-repeat center center fixed;
+        background-size: cover;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .container {
+        width: 50%;
+        margin: 100px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      }
+      h1 {
+        text-align: center;
+        color: #333;
+        font-family: Arial, sans-serif;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 8px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #218838;
+      }
+      .back-button {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .back-button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Yield Prediction</h1>
+      <input type="number" id="rainfall" placeholder="Rainfall (mm)" />
+      <input type="number" id="temperature" placeholder="Temperature (°C)" />
+      <input type="number" id="land" placeholder="land (acre)" />
+      <input
+        type="number"
+        id="fertilizer"
+        placeholder="Fertilizer Usage (kg/ha)"
+      />
+      <select id="soil">
+        <option value="sandy">Sandy</option>
+        <option value="loamy">Loamy</option>
+        <option value="clay">Clay</option>
+      </select>
+      <button onclick="predictYield()">Predict Yield</button>
+      <h3 id="result"></h3>
+    </div>
+    <a href="plant.html" class="back-button">Back</a>
+    <script>
+      function predictYield() {
+        let rainfall = document.getElementById("rainfall").value;
+        let temperature = document.getElementById("temperature").value;
+        let fertilizer = document.getElementById("fertilizer").value;
+        let soil = document.getElementById("soil").value;
+
+        if (!rainfall || !temperature || !fertilizer) {
+          document.getElementById("result").innerText =
+            "Please enter all values";
+          return;
+        }
+
+        let yieldPrediction =
+          rainfall * 0.5 + temperature * 0.3 + fertilizer * 0.2;
+
+        if (soil === "sandy") {
+          yieldPrediction *= 0.8;
+        } else if (soil === "clay") {
+          yieldPrediction *= 1.1;
+        }
+
+        document.getElementById(
+          "result"
+        ).innerText = `Predicted Yield: ${yieldPrediction.toFixed(2)} tons/ha`;
+      }
+    </script>
+  </body>
+</html>
