@@ -46,15 +46,15 @@ This project is implemented as a **Flask-based web application** with an easy-to
 ```mermaid
 graph TD
     A[Farmer Input: Soil Data, Crop Image, Queries] --> B[Backend - Flask API]
-    B --> C[Crop Recommendation (Random Forest)]
-    B --> D[Disease Detection (YOLOv8)]
-    B --> E[Fertilizer Suggestion (LLM)]
-    B --> F[Yield Prediction (LLM)]
+    B --> C[Crop Recommendation - Random Forest]
+    B --> D[Disease Detection - YOLOv8]
+    B --> E[Fertilizer Suggestion - LLM]
+    B --> F[Yield Prediction - LLM]
     C --> G[Results Displayed on Web UI]
     D --> G
     E --> G
     F --> G
-```
+
 
 ---
 
